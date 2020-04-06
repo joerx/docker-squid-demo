@@ -1,0 +1,46 @@
+version: "3.7"
+
+services:
+
+  squid:
+    image: datadog/squid
+    ports: 
+      - "3128:3128"
+    networks:
+      - local_1
+      - local_2
+    volumes:
+      - "./conf/my-squid.conf:/etc/squid/squid.conf"
+      - "./conf/domain-whitelist.txt:/etc/squid/domain-whitelist.txt"
+
+  shell_1:
+    build: 
+      context: ./
+      dockerfile: shell.dockerfile
+    environment:
+      http_proxy: http://squid:3128
+      https_proxy: http://squid:3128
+    networks:
+      - local_1
+
+  shell_2:
+    build: 
+      context: ./
+      dockerfile: shell.dockerfile
+    environment:
+      http_proxy: http://squid:3128
+      https_proxy: http://squid:3128
+    networks:
+      - local_2
+
+networks:
+  local_1:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16
+  local_2:
+    ipam:
+        driver: default
+        config:
+          - subnet: 172.29.0.0/16
