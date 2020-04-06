@@ -3,15 +3,18 @@ version: "3.7"
 services:
 
   squid:
-    image: datadog/squid
+    build:
+      context: ./
+      dockerfile: squid.dockerfile
     ports: 
       - "3128:3128"
     networks:
       - local_1
       - local_2
+    # environment: 
+    #   SQUID_CONF_BASE64_GZ: H4sIAP/ril4AA3VSTU/DMAw9r7/CExeQ0KBlgnFEA4nDNJDYfcpSb6mWxlXiCfbvcdK1fGxTL0793rP97BJXu82SGq7IBXiaza6LLLuAZ1yrnWV4XSzeoSHPmWFuljGCu7yYHDCVQ3iazkJ8zpE/yW8DKGvpE0tgAk3OoeYYsqkCNJ6+9oJV2oIlraxDhuA15A/FqHgc3cp3k9+DiJPeom9BywJcK56dJk4iMfL+E/OeKEU/PmbtKFFEHmmakH7BeHwXIe/pT4lYS/9BrbHFSvAbPLkdDC4gGnIyXeQxvT6TlUodW2yLiHpfUq0qsb8M3IawqdjsViNN9VmIR4sqYBgZFUylyTcJnvDTt/n8ZbqAGtlQ2T3bpbk97FycLfUT2sUqrTHEySU7/Gm5Z3SLJAfERvxlo1zv6AmRroNhb3TUmiptEGrl1EY0Dvi1p7rdl6HAILBLuZOVWtk9eJWqNVQ5thEsg6vYDYsF6K/+FE6H90vpUOe4uS5xjh2Pq7f8mC7IdPBy3zJP5TaZTnP1yW9dbdGdVQMAAA==
     volumes:
       - "./conf/my-squid.conf:/etc/squid/squid.conf"
-      - "./conf/domain-whitelist.txt:/etc/squid/domain-whitelist.txt"
 
   shell_1:
     build: 
